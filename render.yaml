@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: recruitment-partnerai
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: PORT
+        value: 3001
+      - key: DATABASE_PATH
+        value: ./data/recruitment.db
+      - key: GOOGLE_SERVICE_ACCOUNT_EMAIL
+        sync: false
+      - key: GOOGLE_PRIVATE_KEY
+        sync: false
+      - key: GOOGLE_SPREADSHEET_ID
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+    healthCheckPath: /api/health
