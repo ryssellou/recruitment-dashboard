@@ -1,0 +1,21 @@
+{
+  "name": "recruitment-dashboard-automation",
+  "version": "1.0.0",
+  "description": "Recruitment Dashboard Automation - Full Stack Application",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "install": "npm run install:backend && npm run install:frontend",
+    "build:frontend": "cd frontend && npm run build",
+    "build": "npm run build:frontend",
+    "start": "cd backend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "migrate": "cd backend && npm run migrate"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

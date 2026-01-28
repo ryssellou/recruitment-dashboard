@@ -4,6 +4,8 @@ config();
 
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { initDatabase, runMigrations } from './config/database.js';
 import { requireAuth, optionalAuth } from './middleware/auth.js';
 import authRoutes from './routes/auth.js';
@@ -11,6 +13,9 @@ import googleRoutes from './routes/google.js';
 import candidatesRoutes from './routes/candidates.js';
 import reviewsRoutes from './routes/reviews.js';
 import analysisRoutes from './routes/analysis.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -40,15 +45,19 @@ app.use('/api/candidates', optionalAuth, candidatesRoutes);
 app.use('/api/reviews', requireAuth, reviewsRoutes);
 app.use('/api/analysis', requireAuth, analysisRoutes);
 
-// Error handling
-app.use((err, req, res, next) => {
+// Error handling for API routes
+app.use('/api', (err, req, res, next) => {
   console.error('Unhandled error:', err);
   res.status(500).json({ error: 'Internal server error' });
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: 'Not found' });
+// Serve static files from frontend build (production)
+const frontendPath = path.join(__dirname, '../../frontend/dist');
+app.use(express.static(frontendPath));
+
+// SPA fallback - serve index.html for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 // Initialize database and start server
