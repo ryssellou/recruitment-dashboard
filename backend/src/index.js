@@ -68,9 +68,9 @@ async function start() {
 
     await initDatabase();
     runMigrations();
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
-      console.log(`API available at http://localhost:${PORT}/api`);
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server running on port ${PORT}`);
+      console.log(`API available at /api`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);
